@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const authRouter = require('./authRouter')
-const cardRouter = require('./cardRouter')
+const authRouter = require('./routes/authRouter')
+const cardRouter = require('./routes/cardRouter')
 const cors = require('cors');
 require('dotenv').config();
 
@@ -18,13 +18,19 @@ app.use(cors({
     credentials: true,
 }));
 
-const start = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI)
-        app.listen(PORT, () => console.log(`server started on ${PORT}`))
-    } catch (err) {
-        console.log(err)
-    }
+const start =  () => {
+
+        app.listen(PORT, async() => {
+            try {
+                await mongoose.connect(process.env.MONGODB_URI)
+                console.log(`server started on ${PORT}`)
+                console.log(`MongoDB connected: ${mongoose.connection.host}`)
+            } catch (err) {
+                console.log(err)
+
+            }
+           
+    }) 
 }
 
 start()
